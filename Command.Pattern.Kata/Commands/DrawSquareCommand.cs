@@ -1,0 +1,55 @@
+﻿namespace Command.Pattern.Kata.Commands
+{
+    using Command.Pattern.Kata.Shapes;
+    using System.Collections.Generic;
+    using System.Drawing;
+
+    public class DrawSquareCommand : ICommand
+    {
+        private readonly Bitmap _bitmap;
+        private readonly Shape _shape;
+        private readonly Point _point;
+        private readonly Graphics _graphics;
+        private readonly Color _color = Color.BlueViolet;
+
+        public DrawSquareCommand(Bitmap bitmap, Shape shape, Point point)
+        {
+            _bitmap = bitmap;
+            _shape = shape;
+            _point = point;
+            _graphics = Graphics.FromImage(_bitmap);
+        }
+
+        private IList<Color> _previousState { get; set; } = new List<Color>();
+        private int Width { get => _shape.Width; }
+        private int Height { get => _shape.Height; }
+
+        public void Draw()
+        {
+            SavePreviousState();
+
+            var brush = new SolidBrush(_color);
+            var rectangle = new System.Drawing.Rectangle(_point.X, _point.Y, Width, Height);
+            _graphics.FillRectangle(brush, rectangle);
+        }
+
+        private void SavePreviousState()
+        {
+            for (int i = _point.X; i < _point.X + Width; i++)
+            {
+                for (int j = _point.Y; j < _point.Y + Height; j++)
+                {
+                    _previousState.Add(_bitmap.GetPixel(i, j));
+                }
+            }
+        }
+
+        public void Undo()
+        {
+            int ix = 0;
+            for (int i = _point.X; i < _point.X + Width; i++)
+                for (int j = _point.Y; j < _point.Y + Height; j++)
+                    _bitmap.SetPixel(i, j, _previousState[ix++]);
+        }
+    }
+}
