@@ -46,10 +46,10 @@
 
         public void Undo()
         {
-            int ix = 0;
+            var points = 0;
             for (int i = _point.X; i < _point.X + Width; i++)
                 for (int j = _point.Y; j < _point.Y + Height; j++)
-                    _bitmap.SetPixel(i, j, _previousState[ix++]);
+                    _bitmap.SetPixel(i, j, _previousState[points++]);
         }
     }
 }
