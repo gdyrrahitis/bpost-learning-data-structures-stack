@@ -63,12 +63,6 @@
             RefreshWindow();
         }
 
-        private void RefreshWindow()
-        {
-            canvas.Refresh();
-            undoButton.Enabled = _commands.Any();
-        }
-
         private ICommand GetCommand(int x, int y)
         {
             switch (_activeShape)
@@ -82,6 +76,12 @@
                 default:
                     throw new ArgumentOutOfRangeException("Cannot recognize shape.");
             }
+        }
+
+        private void RefreshWindow()
+        {
+            canvas.Refresh();
+            undoButton.Enabled = _commands.Any();
         }
     }
 }
