@@ -11,7 +11,7 @@
 
     public partial class MainForm : Form
     {
-        private Type _activeShape;
+        private Type _activeShape = typeof(Square);
         private Stack<ICommand> _commands = new Stack<ICommand>();
         private Bitmap _bitmap;
         private Graphics _graphics;
